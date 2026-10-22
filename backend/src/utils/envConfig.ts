@@ -1,0 +1,22 @@
+import z from "zod";
+
+const envSchema = z.object({
+  NODE_ENV: z.enum(["development", "production"]).default("development"),
+  PORT: z.coerce.number().int().positive().default(5000),
+  DATABASE: z.url(),
+  DATABASE_USERNAME: z.string().min(1),
+  DATABASE_PASSWORD: z.string().min(1),
+  ACCESS_TOKEN_KEY: z.string().min(32),
+  ACCESS_TOKEN_EXPIRES_IN_MS: z.coerce.number().int().positive(),
+  REFRESH_TOKEN_KEY: z.string().min(32),
+  REFRESH_TOKEN_EXPIRES_IN_MS: z.coerce.number().int().positive(),
+});
+
+const envData = envSchema.safeParse(process.env);
+
+if (!envData.success) {
+  console.error(z.prettifyError(envData.error));
+  process.exit(1);
+}
+
+export default envData.data;
