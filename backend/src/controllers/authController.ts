@@ -6,47 +6,8 @@ import crypto from "node:crypto";
 import AppError from "../utils/appError.js";
 import env from "../utils/envConfig.js";
 import Session from "../models/sessionModel.js";
-
-function generateTokens(
-  userId: string,
-  sessionId: string,
-): {
-  accessToken: string;
-  refreshToken: string;
-} {
-  const accessToken = jwt.sign({ id: userId }, env.ACCESS_TOKEN_KEY, {
-    expiresIn: env.ACCESS_TOKEN_EXPIRES_IN_MS / 1000, // In Seconds
-  });
-
-  const refreshToken = jwt.sign(
-    { id: userId, sId: sessionId },
-    env.REFRESH_TOKEN_KEY,
-    {
-      expiresIn: env.REFRESH_TOKEN_EXPIRES_IN_MS / 1000, // In Seconds
-    },
-  );
-
-  return { accessToken, refreshToken };
-}
-
-function assignTokenCookies(
-  res: Response,
-  tokens: { accessToken: string; refreshToken: string },
-) {
-  res.cookie("accessToken", tokens.accessToken, {
-    expires: new Date(Date.now() + env.ACCESS_TOKEN_EXPIRES_IN_MS),
-    httpOnly: true,
-    secure: env.NODE_ENV === "production",
-    sameSite: "lax",
-  });
-
-  res.cookie("refreshToken", tokens.refreshToken, {
-    expires: new Date(Date.now() + env.REFRESH_TOKEN_EXPIRES_IN_MS),
-    httpOnly: true,
-    secure: env.NODE_ENV === "production",
-    sameSite: "lax",
-  });
-}
+import { assignTokenCookies, clearTokenCookies } from "../utils/cookies.js";
+import { generateTokens } from "../utils/tokens.js";
 
 async function sendUserTokens(
   statusCode: number,
@@ -77,19 +38,6 @@ async function sendUserTokens(
   // 5) Assign these tokens to Cookies
   assignTokenCookies(res, tokens);
   res.status(statusCode).json({ status: "success", data: { user: userData } });
-}
-
-function clearTokenCookies(res: Response) {
-  res.clearCookie("accessToken", {
-    httpOnly: true,
-    secure: env.NODE_ENV === "production",
-    sameSite: "lax",
-  });
-  res.clearCookie("refreshToken", {
-    httpOnly: true,
-    secure: env.NODE_ENV === "production",
-    sameSite: "lax",
-  });
 }
 
 export const signup: RequestHandler = async function (req, res) {

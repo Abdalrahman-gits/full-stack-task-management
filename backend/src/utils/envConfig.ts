@@ -2,6 +2,7 @@ import z from "zod";
 
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "production"]).default("development"),
+  // z.coerce converts to another type "Here is to number"
   PORT: z.coerce.number().int().positive().default(5000),
   DATABASE: z.url(),
   DATABASE_USERNAME: z.string().min(1),
