@@ -7,9 +7,9 @@ const envSchema = z.object({
   DATABASE: z.url(),
   DATABASE_USERNAME: z.string().min(1),
   DATABASE_PASSWORD: z.string().min(1),
-  ACCESS_TOKEN_KEY: z.string().min(32),
+  ACCESS_TOKEN_KEY: z.string().min(17),
   ACCESS_TOKEN_EXPIRES_IN_MS: z.coerce.number().int().positive(),
-  REFRESH_TOKEN_KEY: z.string().min(32),
+  REFRESH_TOKEN_KEY: z.string().min(17),
   REFRESH_TOKEN_EXPIRES_IN_MS: z.coerce.number().int().positive(),
 });
 
