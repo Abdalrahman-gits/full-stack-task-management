@@ -9,6 +9,15 @@ import Session from "../models/sessionModel.js";
 import { assignTokenCookies, clearTokenCookies } from "../utils/cookies.js";
 import { generateTokens } from "../utils/tokens.js";
 
+type accessPayload = {
+  id: string;
+};
+
+type RefreshPayload = {
+  id: string;
+  sId: string;
+};
+
 async function sendUserTokens(
   statusCode: number,
   res: Response,
@@ -23,7 +32,7 @@ async function sendUserTokens(
   };
 
   // 2) Create session
-  const session = await Session.create({
+  const session = new Session({
     userId: user.id,
     expiresAt: new Date(Date.now() + env.REFRESH_TOKEN_EXPIRES_IN_MS),
   });
@@ -68,11 +77,6 @@ export const login: RequestHandler = async function (req, res) {
   await sendUserTokens(200, res, user);
 };
 
-type RefreshPayload = {
-  id: string;
-  sId: string;
-};
-
 export const refreshToken: RequestHandler = async function (req, res) {
   // 1) Extract refresh token from cookies
   const token = req.cookies.refreshToken;
@@ -114,4 +118,29 @@ export const refreshToken: RequestHandler = async function (req, res) {
 
   assignTokenCookies(res, newTokens);
   res.status(204).end();
+};
+
+/*
+ * As it is not sensitive app
+ * I can accept that old token can work for rest of 15m till user refresh again but he can't.
+ * We can append sId in accesstoken and check if session is still exist
+ */
+export const protect: RequestHandler = async function (req, _res, next) {
+  // 1) Extract access token
+  const token = req.cookies.accessToken;
+  if (!token) throw new AppError("Session expired", 401);
+
+  // 2) Verify token
+  let payload: accessPayload;
+  try {
+    payload = jwt.verify(token, env.ACCESS_TOKEN_KEY) as accessPayload;
+  } catch {
+    throw new AppError("Session expired", 401);
+  }
+
+  // 4) Append user in req
+  req.user = { id: payload.id };
+
+  // 5) Call next()
+  next();
 };

@@ -18,7 +18,6 @@ const sessionSchema = new mongoose.Schema(
     },
     expiresAt: {
       type: Date,
-      expires: 0,
       required: true,
     },
   },
@@ -29,8 +28,6 @@ const sessionSchema = new mongoose.Schema(
 // { expireAfterSeconds: 0 } works as ttl "time to live"
 sessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-const Session = mongoose.model("session", sessionSchema);
-
 sessionSchema.pre("save", function () {
   if (!this.isModified("refreshToken")) return;
 
@@ -39,5 +36,7 @@ sessionSchema.pre("save", function () {
     .update(this.refreshToken)
     .digest("hex");
 });
+
+const Session = mongoose.model("session", sessionSchema);
 
 export default Session;
