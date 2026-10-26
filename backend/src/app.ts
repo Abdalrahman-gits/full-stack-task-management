@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRouter.js";
+import taskRouter from "./routes/taskRouter.js";
 import { globalErrorController } from "./controllers/errorController.js";
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/tasks", taskRouter);
 
 app.use(globalErrorController);
 
