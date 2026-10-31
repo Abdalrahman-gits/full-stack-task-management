@@ -1,6 +1,5 @@
 import z from "zod";
 import { TASK_STATUSES, type ITask } from "../../models/taskModel.js";
-import AppError from "../appError.js";
 
 const taskSchema = z.object({
   tag: z.string(),
@@ -13,8 +12,7 @@ const taskSchema = z.object({
 export function validateCreateTask(task: Omit<ITask, "userId">) {
   const validated = taskSchema.safeParse(task);
   if (!validated.success) {
-    console.log(validated.error);
-    throw new AppError("Task validation error!", 400);
+    throw validated.error;
   }
 
   return validated.data;
@@ -35,7 +33,7 @@ export function validateUpdateTask(task: unknown) {
   const validated = updateTaskSchema.safeParse(task);
 
   if (!validated.success) {
-    throw new AppError("Task validation error!", 400);
+    throw validated.error;
   }
 
   return validated.data;

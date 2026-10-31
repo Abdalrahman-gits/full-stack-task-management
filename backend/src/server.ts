@@ -3,6 +3,11 @@ import mongoose from "mongoose";
 import app from "./app.js";
 import env from "./utils/envConfig.js";
 
+process.on("uncaughtException", (err) => {
+  console.log(`uncaught exception error: ${err}`);
+  process.exit(1);
+});
+
 // 1) Connecting to DB
 const { DATABASE, DATABASE_USERNAME, DATABASE_PASSWORD } = env;
 
@@ -18,11 +23,17 @@ mongoose
   })
   .catch((err) => {
     console.log("DB Failed to connect, ERR: ", err);
+    process.exit(1);
   });
 
 // 2) Backend server
 const PORT = env.PORT || 5000;
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log("server is listening");
+});
+
+process.on("unhandledRejection", (reason) => {
+  console.log(`unhandled rej called reason: ${reason}`);
+  server.close(() => process.exit(1));
 });
