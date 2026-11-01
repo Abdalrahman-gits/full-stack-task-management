@@ -1,0 +1,114 @@
+/*
+ * OCTOM design tokens
+ * Source: Figma "Task Management Web App Design (Community)"
+ *   design-tokens/OCTOM · Palette.json      (24 colors)
+ *   design-tokens/OCTOM · Dimensions.json   (radius + size metrics)
+ *   design-tokens/OCTOM · Theme · Light.json (semantic aliases)
+ *   design-tokens/OCTOM · Theme · Dark.json  (semantic aliases)
+ *
+ * Spacing note: the export's spacing/20, 24, 30, 40 are raw pixel values.
+ * Tailwind v4 already derives them from the 0.25rem scale, so they are not
+ * redefined here (that would silently change p-20 from 80px to 20px):
+ *   20px -> p-5    24px -> p-6    30px -> p-7.5    40px -> p-10
+ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Palette */
+  --color-brand-primary: #5051f9;
+  --color-brand-tint: #e7e7ff;
+
+  --color-accent-cyan: #1ea7ff;
+  --color-accent-cyan-tint: #d4eeff;
+  --color-accent-orange-tint: #fff2ea;
+
+  --color-neutral-white: #ffffff;
+  --color-neutral-canvas-light: #f3f4f8;
+  --color-neutral-sidebar-light: #fbfaff;
+  --color-neutral-field-light: #f3f7fa;
+  --color-neutral-border-light: #e5e5ed;
+  --color-neutral-ink: #232360;
+  --color-neutral-muted: #768396;
+  --color-neutral-icon: #5f6388;
+  --color-neutral-canvas-dark: #131517;
+  --color-neutral-surface-dark: #1e1f25;
+  --color-neutral-raised-dark: #282932;
+  --color-neutral-border-dark: #2c2d37;
+  --color-neutral-muted-dark: #9babc5;
+
+  --color-data-green: #0acf83;
+  --color-data-orange: #fe7f2e;
+  --color-data-amber: #f59e0b;
+  --color-data-coral: #ff694a;
+
+  --color-presence-online: #41d37e;
+  --color-presence-busy: #d34141;
+
+  /* Dimensions: radius */
+  --radius-4: 4px;
+  --radius-6: 6px;
+  --radius-7: 7px;
+  --radius-8: 8px;
+  --radius-9: 9px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-14: 14px;
+  --radius-16: 16px;
+  --radius-22-5: 22.5px;
+
+  /* Dimensions: component sizes (use as w-(--size-94) / h-(--size-44)) */
+  --size-44: 44px;
+  --size-76: 76px;
+  --size-94: 94px;
+  --size-290: 290px;
+  --size-396: 396px;
+
+  /* Typography and elevation observed in the source screens */
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --shadow-card: 0 2px 16px 0 rgb(147 170 251 / 0.2);
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-card: var(--card);
+  --color-nav: var(--nav);
+  --color-input: var(--input);
+  --color-subtle: var(--subtle);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-icon: var(--icon);
+  --color-action: var(--action);
+  --color-action-secondary: var(--action-secondary);
+}
+
+:root {
+  color-scheme: light;
+
+  --canvas: var(--color-neutral-canvas-light);
+  --card: var(--color-neutral-white);
+  --nav: var(--color-neutral-sidebar-light);
+  --input: var(--color-neutral-field-light);
+  --subtle: var(--color-neutral-border-light);
+  --ink: var(--color-neutral-ink);
+  --muted: var(--color-neutral-muted);
+  --icon: var(--color-neutral-icon);
+  --action: var(--color-brand-primary);
+  --action-secondary: var(--color-accent-cyan);
+}
+
+:root.dark {
+  color-scheme: dark;
+
+  --canvas: var(--color-neutral-canvas-dark);
+  --card: var(--color-neutral-surface-dark);
+  --nav: var(--color-neutral-surface-dark);
+  --input: var(--color-neutral-raised-dark);
+  --subtle: var(--color-neutral-border-dark);
+  --ink: var(--color-neutral-white);
+  --muted: var(--color-neutral-muted-dark);
+  --icon: var(--color-neutral-icon);
+  --action: var(--color-brand-primary);
+  --action-secondary: var(--color-accent-cyan);
+}
