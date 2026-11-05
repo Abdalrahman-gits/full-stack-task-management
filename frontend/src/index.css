@@ -1,2 +1,6 @@
 @import "tailwindcss";
 @import "./styles/tokens.css";
+
+* {
+  outline: none;
+}
