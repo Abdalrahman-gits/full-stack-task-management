@@ -1,22 +1,43 @@
-import type { ReactNode } from "react";
+import AuthFooter from "./AuthFooter";
+import AuthHeader from "./AuthHeader";
+import { Outlet } from "react-router";
+import AuthBrandPanel from "./AuthBrandPanel";
+import WorkspacePreview from "./WorkspacePreview";
+import { Users } from "lucide-react";
 
-type AuthLayoutProps = {
-  children: ReactNode;
-  aside: ReactNode;
-};
-
-export default function AuthLayout({ children, aside }: AuthLayoutProps) {
+export default function AuthLayout() {
   return (
-    <main className="bg-canvas min-h-dvh px-4 py-10 lg:px-30">
-      <div className="border-subtle bg-card mx-auto flex w-full max-w-300 flex-col overflow-hidden rounded-2xl border lg:min-h-205 lg:flex-row">
-        <aside className="bg-neutral-sidebar-light dark:bg-neutral-surface-dark hidden w-130 shrink-0 p-12 lg:flex lg:flex-col lg:gap-8">
-          {aside}
-        </aside>
+    <div className="bg-canvas flex min-h-dvh flex-col">
+      <AuthHeader />
 
-        <section className="flex flex-1 flex-col justify-center gap-7.5 px-6 py-10 sm:px-12 lg:px-18 lg:py-14">
-          {children}
-        </section>
-      </div>
-    </main>
+      <main className="flex-1 px-4 py-10 lg:px-30">
+        <div className="border-subtle bg-card mx-auto flex w-full max-w-300 flex-col overflow-hidden rounded-2xl border lg:min-h-205 xl:flex-row">
+          <aside className="bg-nav hidden w-130 shrink-0 p-12 xl:flex xl:flex-col xl:gap-8">
+            <AuthBrandPanel
+              eyebrow="A BETTER WAY TO WORK"
+              title={
+                <>
+                  A little more focus.
+                  <br />A lot more done.
+                </>
+              }
+              description="Bring your tasks, projects and people together in one organized workspace."
+              preview={<WorkspacePreview />}
+              benefit={{
+                icon: Users,
+                title: "Less switching. More doing.",
+                description: "Everything you need to move work forward.",
+              }}
+            />
+          </aside>
+
+          <section className="flex flex-1 flex-col justify-center gap-7.5 px-6 py-10 sm:px-12 lg:px-18 lg:py-14">
+            <Outlet />
+          </section>
+        </div>
+      </main>
+
+      <AuthFooter />
+    </div>
   );
 }

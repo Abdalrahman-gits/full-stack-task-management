@@ -139,7 +139,15 @@ export const protect: RequestHandler = async function (req, _res, next) {
   }
 
   // 4) Append user in req
-  req.user = { id: payload.id };
+  const user = await User.findById(payload.id);
+  if (!user) throw new AppError("User is not exist", 401);
+
+  req.user = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+  };
 
   // 5) Call next()
   next();
