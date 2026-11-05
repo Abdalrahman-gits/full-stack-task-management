@@ -10,7 +10,7 @@ export default function AuthLayout() {
     <div className="bg-canvas flex min-h-dvh flex-col">
       <AuthHeader />
 
-      <main className="flex-1 px-4 py-10 lg:px-30">
+      <main className="flex flex-1 justify-center px-4 py-10 lg:px-30">
         <div className="border-subtle bg-card mx-auto flex w-full max-w-300 flex-col overflow-hidden rounded-2xl border lg:min-h-205 xl:flex-row">
           <aside className="bg-nav hidden w-130 shrink-0 p-12 xl:flex xl:flex-col xl:gap-8">
             <AuthBrandPanel

@@ -4,7 +4,8 @@ import octomMark from "@/assets/octom-mark.svg";
 
 export default function AuthHeader() {
   const { pathname } = useLocation();
-  const isLogin = pathname === "login";
+  const isLogin = pathname === "/login";
+  console.log(isLogin, pathname);
 
   return (
     <header className="bg-card flex h-20 shrink-0 items-center justify-between px-6 sm:h-26 sm:px-10 lg:px-16">
