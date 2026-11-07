@@ -11,7 +11,6 @@ type AuthBrandPanelProps = {
     title: string;
     description: string;
   };
-  compact?: boolean;
 };
 
 export default function AuthBrandPanel({
@@ -20,7 +19,6 @@ export default function AuthBrandPanel({
   description,
   preview,
   benefit,
-  compact = false,
 }: AuthBrandPanelProps) {
   const BenefitIcon = benefit?.icon;
 
@@ -34,14 +32,12 @@ export default function AuthBrandPanel({
 
         <h1 className="text-ink text-3xl font-bold">{title}</h1>
 
-        {description && !compact ? (
-          <p className="text-muted text-base">{description}</p>
-        ) : null}
+        {description && <p className="text-muted text-base">{description}</p>}
       </div>
 
-      {!compact ? preview : null}
+      {preview}
 
-      {!compact && benefit && BenefitIcon ? (
+      {benefit && BenefitIcon ? (
         <div className="flex items-center gap-3">
           <div className="bg-brand-tint flex size-9 items-center justify-center rounded-[10px]">
             <BenefitIcon className="text-action size-[18px]" />

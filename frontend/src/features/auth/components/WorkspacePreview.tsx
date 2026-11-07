@@ -46,18 +46,18 @@ export default function WorkspacePreview({
   tasks = defaultTasks,
 }: WorkspacePreviewProps) {
   return (
-    <div className="border-subtle bg-card dark:bg-neutral-raised-dark flex flex-col gap-5 rounded-2xl border p-6">
+    <div className="border-subtle bg-card flex flex-col gap-5 rounded-2xl border p-6">
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-1">
           <p className="text-ink text-base font-bold">{title}</p>
           <p className="text-muted text-xs">{subtitle}</p>
         </div>
-        <div className="bg-accent-cyan-tint flex size-9 items-center justify-center rounded-[10px]">
-          <CalendarDays className="text-neutral-ink size-[18px]" />
+        <div className="bg-accent-cyan-tint rounded-10 flex size-9 items-center justify-center">
+          <CalendarDays className="text-neutral-ink size-4.5" />
         </div>
       </div>
 
-      <div className="bg-neutral-sidebar-light dark:bg-neutral-canvas-dark flex flex-col gap-3 rounded-[10px] p-4">
+      <div className="bg-nav rounded-10 flex flex-col gap-3 p-4">
         <div className="flex items-center justify-between">
           <p className="text-ink text-[13px] font-medium">{progressLabel}</p>
           <p className="text-action text-[13px] font-bold">{progressValue}</p>
@@ -76,8 +76,8 @@ export default function WorkspacePreview({
             <div
               className={
                 task.done
-                  ? "border-action bg-action flex size-[26px] items-center justify-center rounded-lg border"
-                  : "border-subtle bg-card dark:bg-neutral-surface-dark flex size-[26px] items-center justify-center rounded-lg border"
+                  ? "border-action bg-action flex size-6.5 items-center justify-center rounded-lg border"
+                  : "border-subtle bg-card flex size-6.5 items-center justify-center rounded-lg border"
               }
             >
               {task.done ? (
@@ -93,8 +93,8 @@ export default function WorkspacePreview({
             <span
               className={
                 task.dot === "cyan"
-                  ? "bg-accent-cyan size-[7px] rounded-full"
-                  : "bg-action size-[7px] rounded-full"
+                  ? "bg-accent-cyan size-1.75 rounded-full"
+                  : "bg-action size-1.75 rounded-full"
               }
             />
           </div>

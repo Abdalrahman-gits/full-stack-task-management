@@ -98,7 +98,7 @@
   --action-secondary: var(--color-accent-cyan);
 }
 
-:root.dark {
+:root body.dark {
   color-scheme: dark;
 
   --canvas: var(--color-neutral-canvas-dark);

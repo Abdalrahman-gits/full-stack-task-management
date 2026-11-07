@@ -1,5 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router";
+import SignupPage from "./features/auth/pages/SignupPage";
+import AuthLayout from "./features/auth/components/AuthLayout";
+import LoginPage from "./features/auth/pages/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -8,9 +11,10 @@ const router = createBrowserRouter([
   },
   {
     // element: <GuestRoute />,
+    element: <AuthLayout />,
     children: [
-      // { path: "/login", element: <Login /> },
-      // { path: "/signup", element: <Signup /> },
+      { path: "/signup", element: <SignupPage /> },
+      { path: "/login", element: <LoginPage /> },
     ],
   },
   {
