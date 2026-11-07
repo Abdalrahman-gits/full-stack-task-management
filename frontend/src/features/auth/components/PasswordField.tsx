@@ -14,6 +14,7 @@ function PasswordField({
   label,
   error,
   helper,
+  autoComplete,
   ...inputProps
 }: FormFieldProps) {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +26,7 @@ function PasswordField({
       icon={LockKeyhole}
       type={showPassword ? "text" : "password"}
       placeholder="••••••••••••"
-      autoComplete="new-password"
+      autoComplete={autoComplete}
       helper={helper}
       error={error}
       rightSlot={

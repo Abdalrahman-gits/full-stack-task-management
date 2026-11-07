@@ -1,12 +1,11 @@
 import { ArrowRight } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import octomMark from "@/assets/octom-mark.svg";
-import ThemeToggler from "../../../ui/ThemeToggler";
+import ThemeToggler from "@/ui/ThemeToggler";
 
 export default function AuthHeader() {
   const { pathname } = useLocation();
   const isLogin = pathname === "/login";
-  console.log(isLogin, pathname);
 
   return (
     <header className="bg-card flex h-20 shrink-0 items-center justify-between px-6 sm:h-26 sm:px-10 lg:px-16">

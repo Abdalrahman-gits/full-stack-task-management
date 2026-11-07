@@ -8,11 +8,14 @@ import {
   UserRound,
 } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { getApiError } from "../../../services/apiClient";
-import { signupFields, signupSchema, type SignupInput } from "../schema";
+import { getApiError } from "@/services/apiClient";
+import { signupSchema, type SignupInput } from "../schema";
 import FormField from "./FormField";
 import { useSignup } from "../useSignup";
 import PasswordField from "./PasswordField";
+import { setErrorFields } from "@/utils/setErrorFields";
+import ErrorMessage from "@/ui/ErrorMessage";
+import { Button } from "@/ui/button";
 
 export default function SignupForm() {
   const { signup, isPending } = useSignup();
@@ -45,20 +48,13 @@ export default function SignupForm() {
           });
           return;
         }
-        if (apiError.errors?.length) {
-          let mapped = false;
 
-          for (const detail of apiError.errors) {
-            if (detail.field in signupFields.shape) {
-              setError(detail.field as keyof SignupInput, {
-                message: detail.message,
-              });
-              mapped = true;
-            }
-          }
-
-          if (mapped) return;
-        }
+        const isMapped = setErrorFields<SignupInput>(
+          setError,
+          apiError,
+          signupSchema,
+        );
+        if (isMapped) return;
 
         setError("root", { message: apiError.message });
       },
@@ -126,6 +122,7 @@ export default function SignupForm() {
           <PasswordField
             id="password"
             label="Password"
+            autoComplete="new-password"
             helper="Use at least 8 characters, including a number."
             {...register("password")}
             error={errors.password?.message}
@@ -134,6 +131,7 @@ export default function SignupForm() {
           <PasswordField
             id="passwordConfirm"
             label="Confirm password"
+            autoComplete="new-password"
             {...register("passwordConfirm")}
             error={errors.passwordConfirm?.message}
           />
@@ -158,24 +156,15 @@ export default function SignupForm() {
             .
           </p>
 
-          {errors.root?.message ? (
-            <p
-              role="alert"
-              className="border-presence-busy/30 bg-presence-busy/10 text-presence-busy rounded-lg border px-4 py-3 text-sm"
-            >
-              {errors.root?.message}
-            </p>
-          ) : null}
+          {errors.root?.message && (
+            <ErrorMessage message={errors.root?.message} />
+          )}
 
-          <button
-            type="submit"
-            disabled={isPending}
-            className="bg-action focus-visible:ring-action/40 flex h-12 items-center justify-center gap-3 rounded-lg text-base font-medium text-white transition hover:opacity-90 focus-visible:ring-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-70"
-          >
-            {isPending ? <Loader2 className="size-4.5 animate-spin" /> : null}
+          <Button type="submit" disabled={isPending}>
+            {isPending && <Loader2 className="size-4.5 animate-spin" />}
             <span>{isPending ? "Creating account…" : "Create account"}</span>
-            {!isPending ? <ArrowRight className="size-4.5" /> : null}
-          </button>
+            {!isPending && <ArrowRight className="size-4.5" />}
+          </Button>
 
           <div className="flex items-center justify-center gap-1.5">
             <ShieldCheck className="text-muted size-3.5" />
