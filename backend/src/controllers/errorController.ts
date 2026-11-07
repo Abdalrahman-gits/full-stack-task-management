@@ -50,13 +50,15 @@ const handleValidationErrDB = (err: mongoose.Error.ValidationError) => {
   return new AppError("Validation Failed", 400, errors);
 };
 
-const handleDuplicatedFieldsDB = (err: MongoServerError) =>
-  new AppError("Duplicate field", 409, [
+const handleDuplicatedFieldsDB = (err: MongoServerError) => {
+  const key = Object.keys(err.keyValue ?? {})[0] || "unknown";
+  return new AppError("Duplicate field", 409, [
     {
-      field: Object.keys(err.keyValue ?? {})[0] || "unknown",
-      message: "This value already exists",
+      field: key,
+      message: `${key} is already exist`,
     },
   ]);
+};
 
 const handleValidationZod = (err: ZodError) => {
   const errors = err.issues.map((zodErr) => ({
@@ -81,7 +83,7 @@ export const globalErrorController: ErrorRequestHandler = (
   } else if (env.NODE_ENV === "production") {
     if (err.name === "CastError") err = handleCastErrDB(err);
     if (err.name === "ValidationError") err = handleValidationErrDB(err);
-    if (err.code === 11000) err = handleDuplicatedFieldsDB(err);
+    if (err.cause?.code === 11000) err = handleDuplicatedFieldsDB(err.cause);
     if (err instanceof ZodError) err = handleValidationZod(err);
 
     sendProdError(err, res);
