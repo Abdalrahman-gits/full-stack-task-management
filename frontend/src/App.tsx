@@ -1,31 +1,31 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
 import SignupPage from "./features/auth/pages/SignupPage";
 import AuthLayout from "./features/auth/components/AuthLayout";
 import LoginPage from "./features/auth/pages/LoginPage";
+import DashboardLayout from "./features/tasks/components/DashboardLayout";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    // element: <HomeRedirect />,
-  },
-  {
-    // element: <GuestRoute />,
     element: <AuthLayout />,
     children: [
-      { path: "/signup", element: <SignupPage /> },
+      { path: "/", element: <Navigate to="/login" replace /> },
       { path: "/login", element: <LoginPage /> },
+      { path: "/signup", index: true, element: <SignupPage /> },
     ],
   },
   {
     // element: <ProtectedRoute />,
     children: [
       {
-        path: "/dashboard",
-        // element: <DashboardLayout />,
+        element: <DashboardLayout />,
         children: [
-          // { index: true, element: <Tasks /> },
-          // { path: "profile", element: <Profile /> },
+          {
+            path: "/dashboard",
+            element: <Navigate to="/dashboard/tasks" replace />,
+          },
+          // {path:"/dashboard/tasks",element: <TasksPage />}
+          // { path: "/dashboard/profile", element: <ProfilePage /> },
         ],
       },
     ],

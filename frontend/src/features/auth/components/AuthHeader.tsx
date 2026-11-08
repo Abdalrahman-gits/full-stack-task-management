@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Link, useLocation } from "react-router";
-import octomMark from "@/assets/octom-mark.svg";
 import ThemeToggler from "@/ui/ThemeToggler";
+import Logo from "@/ui/Logo";
 
 export default function AuthHeader() {
   const { pathname } = useLocation();
@@ -9,13 +9,7 @@ export default function AuthHeader() {
 
   return (
     <header className="bg-card flex h-20 shrink-0 items-center justify-between px-6 sm:h-26 sm:px-10 lg:px-16">
-      <Link
-        to="/"
-        className="flex items-center gap-3 focus-visible:outline-none"
-      >
-        <img src={octomMark} alt="" className="h-9 w-8" />
-        <span className="text-ink text-xl font-bold">OCTOM.</span>
-      </Link>
+      <Logo />
 
       <div className="flex items-center gap-4 text-sm">
         <ThemeToggler />
